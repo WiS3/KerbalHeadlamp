@@ -1,0 +1,4 @@
+Key,Type,Desc,English
+
+PartModules/Headlamp/Name,Text,,Headlight
+PartModules/Headlamp/LightSwitch,Text,,Light Enabled

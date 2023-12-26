@@ -1,0 +1,23 @@
+{
+  "spec": "2.0",
+  "mod_id": "KerbalHeadlamp",
+  "author": "WiS3",
+  "name": "KerbalHeadlamp",
+  "description": "Add Kerbal Headlamps so you can see in the dark!",
+  "source": "",
+  "version": "0.1.0",
+  "version_check": "",
+  "ksp2_version": {
+    "min": "0.2.0",
+    "max": "*"
+  },
+  "dependencies": [
+    {
+      "id": "com.github.x606.spacewarp",
+      "version": {
+        "min": "1.7.0",
+        "max": "*"
+      }
+    }
+  ]
+}

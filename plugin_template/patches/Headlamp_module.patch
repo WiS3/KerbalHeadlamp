@@ -1,0 +1,18 @@
+:parts {
+    .Module_Kerbal {
+            +Module_Headlamp {
+                +Data_Headlamp {
+                    IsAdvancedControlsShown: false;
+                    isSmoothTransitionEnabled: true;
+                }
+            }
+            PAMModuleVisualsOverride: +[
+                {
+                    PartComponentModuleName: "PartComponentModule_Headlamp",
+                    ModuleDisplayName: "PartModules/Headlamp/Name",
+                    ShowHeader: true,
+                    ShowFooter: true
+                }
+            ];
+    }
+}
