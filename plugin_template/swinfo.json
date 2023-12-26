@@ -4,9 +4,9 @@
   "author": "WiS3",
   "name": "KerbalHeadlamp",
   "description": "Add Kerbal Headlamps so you can see in the dark!",
-  "source": "",
+  "source": " https://github.com/WiS3/KerbalHeadlamp",
   "version": "0.1.0",
-  "version_check": "",
+  "version_check": "https://raw.githubusercontent.com/WiS3/KerbalHeadlamp/main/plugin_info/swinfo.json",
   "ksp2_version": {
     "min": "0.2.0",
     "max": "*"

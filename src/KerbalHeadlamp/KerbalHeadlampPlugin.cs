@@ -22,8 +22,8 @@ public class KerbalHeadlampPlugin : BaseSpaceWarpPlugin
 
     // Singleton instance of the plugin class
     [PublicAPI] public static KerbalHeadlampPlugin Instance { get; set; }
-
-
+    public MessageCenter MessageCenter => GameManager.Instance?.Game?.Messages;
+    private static readonly ManualLogSource _LOGGER = BepInEx.Logging.Logger.CreateLogSource("KerbalHeadlamp.MessageListener");
     /// <summary>
     /// Runs when the mod is first initialized.
     /// </summary>
