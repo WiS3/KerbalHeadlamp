@@ -1,5 +1,5 @@
 # KerbalHeadlamp
-
+![](https://github.com/WiS3/KerbalHeadlamp/assets/2456380/d0b85933-2555-4f85-b787-3d882b220fcc)
 Add EVA Kerbal Headlamps like in KSP1.
 
 You can toggle them using the **Vessel Action** icon aswell the **Lights** ActionGroup (default is **U** Key).
