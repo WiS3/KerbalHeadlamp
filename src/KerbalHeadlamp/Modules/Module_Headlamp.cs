@@ -6,6 +6,10 @@ using KSP.Sim;
 using I2.Loc;
 using Logger = BepInEx.Logging.Logger;
 using UnityEngine.Serialization;
+using KSP.UI;
+using KSP.Game;
+using KSP.UI.Flight;
+using SpaceWarp.API.Game.Extensions;
 
 namespace KerbalHeadlamp.Modules
 {
@@ -26,6 +30,7 @@ namespace KerbalHeadlamp.Modules
         private float _currentIntensity;
         private bool _isBrightening;
         private bool _isDimming;
+        private bool _currentLightState;
         private KSPPartAudioManager _kspPartAudioManager;
 
         public override Type PartComponentModuleType => typeof(PartComponentModule_Headlamp);
@@ -62,7 +67,7 @@ namespace KerbalHeadlamp.Modules
                     Light light = light_go.AddComponent<Light>();
                     light.enabled = true;
                     light.type = LightType.Spot;
-                    light.intensity = 1f;
+                    light.intensity = this._currentIntensity;
                     light.range = 50;
                     light.spotAngle = 110;
 
@@ -98,14 +103,9 @@ namespace KerbalHeadlamp.Modules
             this.AddActionGroupAction(new Action(this.SetLightStateOff), KSPActionGroup.None, LocalizationManager.GetTranslation("PartModules/Light/LightEnabled/Disable", true, 0, true, false, (GameObject)null, (string)null, true));
             this.moduleIsEnabled = true;
             this._kspPartAudioManager = this.simulationObject?.Part?.PartAudioManager;
-            if(this._kspPartAudioManager == null)
-            {
-                _LOGGER.LogInfo($"_kspPartAudioManager not found");
-                this.gameObject.AddComponent<KSPPartAudio>();
-                this._kspPartAudioManager = new KSPPartAudioManager(this.gameObject);
-            }
             _LOGGER.LogInfo($"OnInitialize");
         }
+
         public override void OnModuleUpdate(float deltaTime) => this.UpdateLight(deltaTime);
         public override void OnShutdown()
         {
@@ -134,6 +134,10 @@ namespace KerbalHeadlamp.Modules
                     if (this._isDimming && (double)this._elapsedTransitionTime < (double)this.dataHeadlamp.lightDimDuration)
                     {
                         this._currentIntensity = Mathf.Abs((this.dataHeadlamp.lightDimDuration - this._elapsedTransitionTime) / Mathf.Max(this.dataHeadlamp.lightDimDuration, 1f / 1000f));
+                        if (this._currentIntensity < 0.1f)
+                        {
+                            this._currentIntensity = 0.0f;
+                        }
                         this._currentLightColor = Color.Lerp(Color.black, this._lightColor, this._currentIntensity);
                         this._isDimming = (double)this._currentIntensity > 0.0;
                     }
@@ -153,15 +157,22 @@ namespace KerbalHeadlamp.Modules
         private void SetLightStateOff() => this.SetLightState(false);
         private void SetLightState(bool state)
         {
-            bool flag = this.dataHeadlamp.isLightEnabled.GetValue();
             this.dataHeadlamp.isLightEnabled.SetValue(state);
 
-            if (this._kspPartAudioManager == null || flag == state)
+            if (this._kspPartAudioManager == null || this._currentLightState == state)
                 return;
             if (state)
-                this._kspPartAudioManager.OnLightTurnedOn();
+            {
+                //GameManager.Instance.Game.
+                KSP.Audio.KSPAudioEventManager.PostAKEvent("Play_light_ON");
+                //this._kspPartAudioManager.PartAudio?.OnLightTurnedOn();
+            }
             else
-                this._kspPartAudioManager.OnLightTurnedOff();
+            {
+                KSP.Audio.KSPAudioEventManager.PostAKEvent("Play_light_OFF");
+                //this._kspPartAudioManager.PartAudio?.OnLightTurnedOff();
+            }
+            this._currentLightState = state;
             _LOGGER.LogDebug($"Headlamp new State: {(state ? "Enabled" : "Disabled")}");
         }
         private void UpdateLightColors()
@@ -169,6 +180,7 @@ namespace KerbalHeadlamp.Modules
             this._lightColor.r = this.dataHeadlamp.lightColorR.GetValue();
             this._lightColor.g = this.dataHeadlamp.lightColorG.GetValue();
             this._lightColor.b = this.dataHeadlamp.lightColorB.GetValue();
+            this._currentLightColor = this._lightColor;
             this.lightMeshRenderer?.material.SetColor("_EmissionColor", this.CurrentHDREmissionColor);
             if(Headlamp_Light != null)
                 Headlamp_Light.light.color = this._lightColor;
@@ -219,6 +231,7 @@ namespace KerbalHeadlamp.Modules
         private void OnIsAdvancedSettingsShownChanged() => this.UpdateFlightPAMControlVisibility();
         private void UpdateFlightPAMControlVisibility()
         {
+
             this.dataHeadlamp.SetVisible((IModuleDataContext)this.dataHeadlamp.lightColorR, this.dataHeadlamp.IsAdvancedControlsShown.GetValue());
             this.dataHeadlamp.SetVisible((IModuleDataContext)this.dataHeadlamp.lightColorG, this.dataHeadlamp.IsAdvancedControlsShown.GetValue());
             this.dataHeadlamp.SetVisible((IModuleDataContext)this.dataHeadlamp.lightColorB, this.dataHeadlamp.IsAdvancedControlsShown.GetValue());

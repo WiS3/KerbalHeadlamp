@@ -8,6 +8,9 @@ using KSP.Game;
 using KSP.Modules;
 using KerbalHeadlamp.Modules;
 using Logger = BepInEx.Logging.Logger;
+using KSP.Sim.impl;
+using KSP.UI.Flight;
+using UnityEngine;
 
 namespace KerbalHeadlamp;
 
@@ -39,13 +42,32 @@ public class KerbalHeadlampPlugin : BaseSpaceWarpPlugin
     }
 
     public void SubscribeToMessages() => _ = Subscribe();
-
+    public void ShowLightsActionGroupButton() => _ = ShowLightsActionGroupButtonTask();
     private async Task Subscribe()
     {
         await Task.Delay(100);
 
+        MessageCenter.PersistentSubscribe<VesselChangedMessage>(OnVesselChangedMessage);
+        _LOGGER.LogInfo("Subscribed to VesselChangedMessage");
+
         MessageCenter.PersistentSubscribe<KerbalRigLoadComplete>(OnKerbalRigLoadComplete);
         _LOGGER.LogInfo("Subscribed to KerbalRigLoadComplete");
+    }
+
+    private async Task ShowLightsActionGroupButtonTask()
+    {
+        await Task.Delay(100);
+        //GameObject lightsActionButton_Gameobject = GameObject.Find("")
+        GameObject.Find("GameManager/Default Game Instance(Clone)/UI Manager(Clone)/Scaled Main Canvas/FlightHudRoot(Clone)/group_actionbar(Clone)/ButtonBar/").transform.GetChild(3).gameObject.SetActive(true);
+    }
+
+    private void OnVesselChangedMessage(MessageCenterMessage msg)
+    {
+        var message = msg as VesselChangedMessage;
+        if (message.Vessel.IsKerbalEVA)
+        {
+            ShowLightsActionGroupButton();
+        }
     }
 
     private void OnKerbalRigLoadComplete(MessageCenterMessage msg)

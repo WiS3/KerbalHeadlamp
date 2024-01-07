@@ -1,5 +1,7 @@
 ﻿
+using IGUtils;
 using KSP.Api;
+using KSP.Api.Generic;
 using KSP.Sim;
 using KSP.Sim.Definitions;
 using UnityEngine;
@@ -58,12 +60,12 @@ namespace KerbalHeadlamp.Modules
 
         public override void Copy(ModuleData sourceModuleData)
         {
-            //Data_Headlamp dataHeadlamp = (Data_Headlamp)sourceModuleData;
-            //IGAssert.IsNotNull((object)dataHeadlamp);
-            //this.isLightEnabled.SetValue((IProperty<bool>)dataHeadlamp.isLightEnabled);
-            //this.lightColorR.SetValue((IProperty<float>)dataHeadlamp.lightColorR);
-            //this.lightColorG.SetValue((IProperty<float>)dataHeadlamp.lightColorG);
-            //this.lightColorB.SetValue((IProperty<float>)dataHeadlamp.lightColorB);
+            Data_Headlamp dataHeadlamp = (Data_Headlamp)sourceModuleData;
+            IGAssert.IsNotNull((object)dataHeadlamp);
+            this.isLightEnabled.SetValue((IProperty<bool>)dataHeadlamp.isLightEnabled);
+            this.lightColorR.SetValue((IProperty<float>)dataHeadlamp.lightColorR);
+            this.lightColorG.SetValue((IProperty<float>)dataHeadlamp.lightColorG);
+            this.lightColorB.SetValue((IProperty<float>)dataHeadlamp.lightColorB);
         }
     }
 }

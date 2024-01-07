@@ -2,13 +2,12 @@
     .Module_Kerbal {
             +Module_Headlamp {
                 +Data_Headlamp {
-                    IsAdvancedControlsShown: false;
-                    isSmoothTransitionEnabled: true;
                 }
             }
             PAMModuleVisualsOverride: +[
                 {
                     PartComponentModuleName: "PartComponentModule_Headlamp",
+                    PartComponentModuleType: "KSP.Sim.impl.PartComponentModule_Light, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                     ModuleDisplayName: "PartModules/Headlamp/Name",
                     ShowHeader: true,
                     ShowFooter: true
