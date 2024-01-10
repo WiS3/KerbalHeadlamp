@@ -10,6 +10,8 @@ using KSP.UI;
 using KSP.Game;
 using KSP.UI.Flight;
 using SpaceWarp.API.Game.Extensions;
+using KSP.Api.CoreTypes;
+using KSP.Sim.impl;
 
 namespace KerbalHeadlamp.Modules
 {
@@ -24,6 +26,7 @@ namespace KerbalHeadlamp.Modules
         public MeshRenderer lightMeshRenderer;
         public float emissionHDRIntensity = 6f;
         public float maxLightIntensity = 2f;
+
         private Color _lightColor = Color.white;
         private Color _currentLightColor = Color.white;
         private float _elapsedTransitionTime;
@@ -54,7 +57,7 @@ namespace KerbalHeadlamp.Modules
                     SpaceWarp.API.Assets.AssetManager.TryGetAsset("KerbalHeadlamp/images/kerbal_spacesuit_01_e.png", out EmissionMap_Texture);
                     if (EmissionMap_Texture != null)
                     {
-                        this.lightMeshRenderer = kerbal_helmet_t.GetComponentInChildren<MeshRenderer>(true); // GetComponent<Renderer>();
+                        this.lightMeshRenderer = kerbal_helmet_t.GetComponentInChildren<MeshRenderer>(true);
                         this.lightMeshRenderer?.material.SetTexture("_EmissionMap", EmissionMap_Texture);
                         this.lightMeshRenderer?.material.SetColor("_EmissionColor", this.CurrentHDREmissionColor);
                     }
@@ -72,22 +75,24 @@ namespace KerbalHeadlamp.Modules
                     light.spotAngle = 110;
 
                     Headlamp_Light = new KSPLight(light, 1.0f);
-                    _LOGGER.LogInfo("Added Headlamp");
+                    //_LOGGER.LogInfo("Added Headlamp");
                 }
                 else
                 {
-                    _LOGGER.LogWarning("Could not find Kerbal helmet");
+                    //_LOGGER.LogWarning("Could not find Kerbal helmet");
                 }
             }
             else
             {
-                _LOGGER.LogDebug("Headlamp already exists");
+                //_LOGGER.LogDebug("Headlamp already exists");
             }
         }
         public override void AddDataModules()
         {
             base.AddDataModules();
-            this.DataModules.TryAddUnique<Data_Headlamp>(this.dataHeadlamp, out this.dataHeadlamp);
+            //this.DataModules.TryAddUnique<Data_Headlamp>(this.dataHeadlamp, out this.dataHeadlamp);
+            this.dataHeadlamp = new Data_Headlamp();
+            this.DataModules.Add(typeof(Data_Headlamp), dataHeadlamp);
         }
 
         public override void OnInitialize()
@@ -163,17 +168,14 @@ namespace KerbalHeadlamp.Modules
                 return;
             if (state)
             {
-                //GameManager.Instance.Game.
                 KSP.Audio.KSPAudioEventManager.PostAKEvent("Play_light_ON");
-                //this._kspPartAudioManager.PartAudio?.OnLightTurnedOn();
             }
             else
             {
                 KSP.Audio.KSPAudioEventManager.PostAKEvent("Play_light_OFF");
-                //this._kspPartAudioManager.PartAudio?.OnLightTurnedOff();
             }
             this._currentLightState = state;
-            _LOGGER.LogDebug($"Headlamp new State: {(state ? "Enabled" : "Disabled")}");
+            //_LOGGER.LogDebug($"Headlamp new State: {(state ? "Enabled" : "Disabled")}");
         }
         private void UpdateLightColors()
         {
@@ -231,11 +233,10 @@ namespace KerbalHeadlamp.Modules
         private void OnIsAdvancedSettingsShownChanged() => this.UpdateFlightPAMControlVisibility();
         private void UpdateFlightPAMControlVisibility()
         {
-
             this.dataHeadlamp.SetVisible((IModuleDataContext)this.dataHeadlamp.lightColorR, this.dataHeadlamp.IsAdvancedControlsShown.GetValue());
             this.dataHeadlamp.SetVisible((IModuleDataContext)this.dataHeadlamp.lightColorG, this.dataHeadlamp.IsAdvancedControlsShown.GetValue());
             this.dataHeadlamp.SetVisible((IModuleDataContext)this.dataHeadlamp.lightColorB, this.dataHeadlamp.IsAdvancedControlsShown.GetValue());
-            _LOGGER.LogInfo($"UpdateFlightPAMVisibility Done");
+            //_LOGGER.LogInfo($"UpdateFlightPAMVisibility Done");
         }
     }
 }

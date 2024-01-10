@@ -12,9 +12,8 @@ namespace KerbalHeadlamp.Modules
     public sealed class Data_Headlamp : ModuleData
     {
         public override Type ModuleType => typeof(Module_Headlamp);
-
         [LocalizedField("PartModules/Headlamp/LightSwitch")]
-        [KSPState(CopyToSymmetrySet = true)]
+        [KSPState]
         [PAMDisplayControl(SortIndex = 1)]
         [HideInInspector]
         public ModuleProperty<bool> isLightEnabled = new ModuleProperty<bool>(false);
@@ -24,19 +23,19 @@ namespace KerbalHeadlamp.Modules
         [HideInInspector]
         public ModuleProperty<bool> IsAdvancedControlsShown = new ModuleProperty<bool>(false);
         [LocalizedField("PartModules/Light/ColorR")]
-        [KSPState(CopyToSymmetrySet = true)]
+        [KSPState]
         [PAMDisplayControl(SortIndex = 3)]
         [SteppedRange(0.0f, 1f, 0.01f)]
         [HideInInspector]
         public ModuleProperty<float> lightColorR = new ModuleProperty<float>(1f, false, new ToStringDelegate(Data_Headlamp.GetColorComponentString));
         [LocalizedField("PartModules/Light/ColorG")]
-        [KSPState(CopyToSymmetrySet = true)]
+        [KSPState]
         [PAMDisplayControl(SortIndex = 4)]
         [SteppedRange(0.0f, 1f, 0.01f)]
         [HideInInspector]
         public ModuleProperty<float> lightColorG = new ModuleProperty<float>(1f, false, new ToStringDelegate(Data_Headlamp.GetColorComponentString));
         [LocalizedField("PartModules/Light/ColorB")]
-        [KSPState(CopyToSymmetrySet = true)]
+        [KSPState]
         [PAMDisplayControl(SortIndex = 5)]
         [SteppedRange(0.0f, 1f, 0.01f)]
         [HideInInspector]
