@@ -1,4 +1,4 @@
-Key,Type,Desc,English
+Key,Type,Desc,English,Chinese (Simplified)
 
-PartModules/Headlamp/Name,Text,,Headlamp
-PartModules/Headlamp/LightSwitch,Text,,Light Enabled
+PartModules/Headlamp/Name,Text,,Headlamp,头灯
+PartModules/Headlamp/LightSwitch,Text,,Light Enabled,头灯已开启
